@@ -1,0 +1,25 @@
+note: pygame is only required for moviepy
+
+
+from moviepy.editor import *
+
+# Replace these paths with your video file paths
+video_paths = ["path/to/video1.mp4", "path/to/video2.mp4", "path/to/video3.mp4"]
+
+# Load the video clips
+video_clips = [VideoFileClip(path) for path in video_paths]
+
+# Apply crossfade transition between video clips
+transitions = []
+for i in range(len(video_clips) - 1):
+    transition = video_clips[i].crossfadeout(1)  # Crossfade duration: 1 second
+    transitions.append(transition)
+
+# Concatenate video clips with transitions
+final_clip = concatenate_videoclips(video_clips, method="compose", transitions=transitions)
+
+# Specify the output path for the final concatenated video
+output_path = "path/to/your/output/concatenated_video.mp4"
+
+# Save the concatenated video
+final_clip.write_videofile(output_path, codec="libx264", audio_codec="aac")
