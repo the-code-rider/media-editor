@@ -1,9 +1,16 @@
 from pydub import AudioSegment
 from moviepy.editor import AudioFileClip
+import io
 class AudioEditor:
 
     def load_audio_clip(self, audio_path):
         return AudioFileClip(audio_path)
+
+    def merge_audio_clips(self, audio_list):
+        merged_audio = sum(audio_list)
+        return merged_audio
+
+
 
     def overlay(self, audio1_path: str, audio2_path: str, auto_clip: bool = False):
         # auto clip will clip second sound
@@ -38,6 +45,11 @@ class AudioEditor:
             sound = AudioSegment.from_wav(audio_path)
 
         return sound
+
+    def load_binary_audio(self, binary_audio, format: str = 'mp3'):
+        audio_stream = io.BytesIO(binary_audio)
+        return AudioSegment.from_file(audio_stream, format=format)
+
 
     # def increase_loude
 

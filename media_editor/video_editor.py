@@ -1,9 +1,14 @@
 from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips, transfx
-
+import io
 class VideoEditor:
 
     def load_video(self, video_path):
         return VideoFileClip(video_path)
+
+    def load_binary_video(self, video_bytes):
+        video_stream = io.BytesIO(video_bytes)
+        return VideoFileClip(video_stream)
+
 
     def add_audio(self, video: VideoFileClip, audio:AudioFileClip):
         return video.set_audio(audio)
