@@ -32,7 +32,7 @@ def merge():
         # todo: add progress bar, make it async so that the ui is still responsive
         merged = vc.merge_video_audio(video_paths[0], audio_paths[0])
         vc.save(merged, 'merged.mp4')
-        ui.video('merged.mp4')
+        ui.video('songs.mp4')
         # option to download merged video
 
 

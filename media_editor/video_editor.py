@@ -16,6 +16,14 @@ class VideoEditor:
     def export_video(self, video: VideoFileClip, output_path):
         video.write_videofile(output_path)
 
+    def export_video_index_error(self, video: VideoFileClip, output_path):
+        # https://github.com/Zulko/moviepy/issues/646#issuecomment-475036696
+        # Short by one frame, so get rid on the last frame:
+        final_clip = video.subclip(t_end=(video.duration - 1.0 / video.fps))
+        final_clip.write_videofile(output_path, threads=8, logger=None)
+        print("Saved .mp4 after Exception at {}".format(output_path))
+
+
     def loop_with_transition(self, video: VideoFileClip, number_of_loops: int, crossfadein_time: int = 1):
         # loops same video with a transitions
 
@@ -24,6 +32,11 @@ class VideoEditor:
         final_clip = concatenate_videoclips(video_list)
 
         return final_clip
+
+    def convert_to_gif(self, video_clip: VideoFileClip, output_name):
+        # slow, use ffmpeg instead
+        # ffmpeg -i wasteland_looped.mp4 -vf "fps=30,scale=1280:-1:flags=lanczos" -c:v gif -b:v 2M -maxrate 2M -bufsize 2M  output.gif
+        video_clip.write_gif()
 
 
 

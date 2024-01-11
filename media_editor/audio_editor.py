@@ -1,5 +1,6 @@
 from pydub import AudioSegment
 from moviepy.editor import AudioFileClip
+from pydub.playback import play
 import io
 class AudioEditor:
 
@@ -10,6 +11,20 @@ class AudioEditor:
         merged_audio = sum(audio_list)
         return merged_audio
 
+    def play_audio(self, audio_clip):
+        play(audio_clip)
+
+    def snip_audio_clip(self, audio_clip, start_min, start_sec, end_min, end_sec):
+        # time in seconds
+        start_time = start_min*60*1000 + start_sec*1000
+        end_time = end_min*60*1000 + end_sec*1000
+
+        clipped_audio = audio_clip[start_time:end_time]
+        return clipped_audio
+
+    def match_target_amplitude(self, source_clip, target_clip):
+        change_in_dBFS = target_clip.dBFS - source_clip.dBFS
+        return source_clip.apply_gain(change_in_dBFS)
 
 
     def overlay(self, audio1_path: str, audio2_path: str, auto_clip: bool = False):
@@ -49,6 +64,12 @@ class AudioEditor:
     def load_binary_audio(self, binary_audio, format: str = 'mp3'):
         audio_stream = io.BytesIO(binary_audio)
         return AudioSegment.from_file(audio_stream, format=format)
+
+    def get_max_amplitude(self, audio_clip):
+        return audio_clip.max
+
+    def get_max_loudness(self, audio_clip):
+        return audio_clip.max_dBFS
 
 
     # def increase_loude

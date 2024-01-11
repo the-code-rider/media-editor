@@ -1,4 +1,7 @@
 import math
+
+from moviepy.video.VideoClip import ImageClip
+
 from media_editor.audio_editor import AudioEditor
 from media_editor.video_editor import VideoEditor
 
@@ -22,6 +25,16 @@ class Composer:
             merged = self.video_editor.add_audio(clipped_video, audio)
 
         return merged
+
+    def merge_image_and_audio(self, image_path, audio_path):
+        audio_clip = self.audio_editor.load_audio_clip(audio_path)
+        audio_duration = audio_clip.duration
+
+        video_clip = ImageClip(image_path, duration=audio_duration)
+        video_clip = video_clip.set_audio(audio_clip)
+
+        return video_clip
+
 
     def save(self, video, output_path):
         self.video_editor.export_video(video, output_path)
