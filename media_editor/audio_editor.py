@@ -8,6 +8,7 @@ class AudioEditor:
         return AudioFileClip(audio_path)
 
     def merge_audio_clips(self, audio_list):
+        # pydub
         merged_audio = sum(audio_list)
         return merged_audio
 
